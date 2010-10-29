@@ -1,4 +1,4 @@
-CFLAGS = -O2
+CFLAGS = -O2 -Wall
 
 netrate: netrate.c netrate.h list.h
 	$(CC) $(CFLAGS) -o netrate netrate.c

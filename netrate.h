@@ -9,25 +9,25 @@
 #include "list.h"
 
 struct rx_stat {
-	unsigned int bytes;
-	unsigned int packets;
-	unsigned int errs;
-	unsigned int drop;
-	unsigned int fifo;
-	unsigned int frame;
-	unsigned int compressed;
-	unsigned int multicast;
+	unsigned long bytes;
+	unsigned long packets;
+	unsigned long errs;
+	unsigned long drop;
+	unsigned long fifo;
+	unsigned long frame;
+	unsigned long compressed;
+	unsigned long multicast;
 };
 
 struct tx_stat {
-	unsigned int bytes;
-	unsigned int packets;
-	unsigned int errs;
-	unsigned int drop;
-	unsigned int fifo;
-	unsigned int colls;
-	unsigned int carrier;
-	unsigned int compressed;
+	unsigned long bytes;
+	unsigned long packets;
+	unsigned long errs;
+	unsigned long drop;
+	unsigned long fifo;
+	unsigned long colls;
+	unsigned long carrier;
+	unsigned long compressed;
 };
 
 struct if_stat {

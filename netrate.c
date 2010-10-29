@@ -25,7 +25,7 @@ char *parse_line(char *s, struct rx_stat *rx, struct tx_stat *tx)
 
 	*(s++) = '\0';
 
-	if (sscanf(s, "%u%u%u%u%u%u%u%u%u%u%u%u%u%u%u%u",
+	if (sscanf(s, "%lu%lu%lu%lu%lu%lu%lu%lu%lu%lu%lu%lu%lu%lu%lu%lu",
 				&rx->bytes,
 				&rx->packets,
 				&rx->errs,
