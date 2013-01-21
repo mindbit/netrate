@@ -9,7 +9,7 @@
 #include "list.h"
 
 struct rx_stat {
-	unsigned long bytes;
+	unsigned long long bytes;
 	unsigned long packets;
 	unsigned long errs;
 	unsigned long drop;
@@ -20,7 +20,7 @@ struct rx_stat {
 };
 
 struct tx_stat {
-	unsigned long bytes;
+	unsigned long long bytes;
 	unsigned long packets;
 	unsigned long errs;
 	unsigned long drop;
