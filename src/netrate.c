@@ -136,15 +136,15 @@ void display_stats(void)
 	struct if_data *ifd;
 
 	fputs("\033[2J\033[1;1H", stdout);
-	printf("%8s %16s %16s %16s %16s\n\n",
-		"Device", "RX kbytes/s", "RX kpackets/s", "TX kbytes/s", "TX kpackets/s");
+	printf("%15s %13s %13s %13s %13s\n\n",
+		"Device", "RX kbytes/s", "RX kpkts/s", "TX kbytes/s", "TX kpkts/s");
 	list_for_each_entry(ifd, &if_data, lh) {
 		struct if_stat *latest = list_entry(ifd->stat.next, struct if_stat, lh);
 		struct if_stat *earliest = list_entry(ifd->stat.prev, struct if_stat, lh);
 		double factor = ifd->stat_size > 1 ?
 			1.0 / time_diff(&latest->tv, &earliest->tv) : 0;
 
-		printf("%8s %16.2f %16.2f %16.2f %16.2f\n",
+		printf("%15s %13.2f %13.2f %13.2f %13.2f\n",
 			ifd->name,
 			(double)(latest->rx.bytes - earliest->rx.bytes) * 1000 / 1024 * factor,
 			(double)(latest->rx.packets - earliest->rx.packets) * factor,
@@ -183,7 +183,8 @@ int main(int argc, char **argv)
 
 			if_tmp = malloc(sizeof(struct if_tmp));
 			assert(if_tmp);
-			strncpy(&if_tmp->name[0], if_name, IFNAMSIZ);
+			strncpy(if_tmp->name, if_name, sizeof(if_tmp->name) - 1);
+			if_tmp->name[sizeof(if_tmp->name) - 1] = 0;
 			if_tmp->stat.tv = now;
 			if_tmp->stat.rx = rx;
 			if_tmp->stat.tx = tx;

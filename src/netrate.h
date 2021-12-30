@@ -2,10 +2,7 @@
 #ifndef _NETRATE_H
 #define _NETRATE_H
 
-#ifndef IFNAMSIZ
-#define IFNAMSIZ 16
-/* FIXME take value from kernel headers; linux/if.h seems not to include by itself */
-#endif
+#include <net/if.h>
 
 #include "list.h"
 
