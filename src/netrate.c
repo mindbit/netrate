@@ -27,27 +27,24 @@ char *parse_line(char *s, struct rx_stat *rx, struct tx_stat *tx)
 
 	*(s++) = '\0';
 
-	if (sscanf(s, "%llu%lu%lu%lu%lu%lu%lu%lu%llu%lu%lu%lu%lu%lu%lu%lu",
-				&rx->bytes,
-				&rx->packets,
-				&rx->errs,
-				&rx->drop,
-				&rx->fifo,
-				&rx->frame,
-				&rx->compressed,
-				&rx->multicast,
-				&tx->bytes,
-				&tx->packets,
-				&tx->errs,
-				&tx->drop,
-				&tx->fifo,
-				&tx->colls,
-				&tx->carrier,
-				&tx->compressed
-			  ) < 16)
-		return NULL;
-
-	return ret;
+	return sscanf(s, "%llu%lu%lu%lu%lu%lu%lu%lu%llu%lu%lu%lu%lu%lu%lu%lu",
+		&rx->bytes,
+		&rx->packets,
+		&rx->errs,
+		&rx->drop,
+		&rx->fifo,
+		&rx->frame,
+		&rx->compressed,
+		&rx->multicast,
+		&tx->bytes,
+		&tx->packets,
+		&tx->errs,
+		&tx->drop,
+		&tx->fifo,
+		&tx->colls,
+		&tx->carrier,
+		&tx->compressed
+		) < 16 ? NULL : ret;
 }
 
 int read_line(char *buf, size_t size, FILE *f)
@@ -140,7 +137,7 @@ void display_stats(void)
 
 	fputs("\033[2J\033[1;1H", stdout);
 	printf("%8s %16s %16s %16s %16s\n\n",
-			"Device", "RX kbytes/s", "RX kpackets/s", "TX kbytes/s", "TX kpackets/s");
+		"Device", "RX kbytes/s", "RX kpackets/s", "TX kbytes/s", "TX kpackets/s");
 	list_for_each_entry(ifd, &if_data, lh) {
 		struct if_stat *latest = list_entry(ifd->stat.next, struct if_stat, lh);
 		struct if_stat *earliest = list_entry(ifd->stat.prev, struct if_stat, lh);
@@ -148,18 +145,12 @@ void display_stats(void)
 			1.0 / time_diff(&latest->tv, &earliest->tv) : 0;
 
 		printf("%8s %16.2f %16.2f %16.2f %16.2f\n",
-				ifd->name,
-				(double)(latest->rx.bytes - earliest->rx.bytes) * 1000 / 1024 * factor,
-				(double)(latest->rx.packets - earliest->rx.packets) * factor,
-				(double)(latest->tx.bytes - earliest->tx.bytes) * 1000 / 1024 * factor,
-				(double)(latest->tx.packets - earliest->tx.packets) * factor
-			  );
-
-		/*
-		if (!strcmp(ifd->name, "eth2")) {
-			printf("debug %u %u %u %u %p %p %f %f\n", latest->rx.bytes, earliest->rx.bytes, latest->rx.packets, earliest->rx.packets, latest, earliest, time_diff(&latest->tv, &earliest->tv), factor);
-		}
-		*/
+			ifd->name,
+			(double)(latest->rx.bytes - earliest->rx.bytes) * 1000 / 1024 * factor,
+			(double)(latest->rx.packets - earliest->rx.packets) * factor,
+			(double)(latest->tx.bytes - earliest->tx.bytes) * 1000 / 1024 * factor,
+			(double)(latest->tx.packets - earliest->tx.packets) * factor
+			);
 	}
 }
 
