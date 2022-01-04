@@ -1,6 +1,6 @@
 Name: netrate
 Version: 0.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Network interface traffic meter
 License: GPLv2
 URL: https://github.com/mindbit/netrate
@@ -15,7 +15,8 @@ count rate of network interfaces in Linux systems.
 %setup -q
 
 %build
-make CFLAGS="-g -O2" %{?_smp_mflags} -C src
+%set_build_flags
+%make_build -C src
 
 %install
 %make_install -C src
@@ -26,5 +27,8 @@ make CFLAGS="-g -O2" %{?_smp_mflags} -C src
 %doc README.md
 
 %changelog
+* Mon Jan 03 2022 Radu Rendec <radu@rendec.net> - 0.1-2
+- Use distribution provided CFLAGS
+
 * Thu Dec 30 2021 Radu Rendec <radu@rendec.net> - 0.1-1
 - First release
